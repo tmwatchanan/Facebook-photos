@@ -2,8 +2,13 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
   if (request.action == "getSource") {
     var htmlSource = request.source;
     message.innerText = htmlSource; //request.source;
-    var imgUrls = retrieveImg(request.source);
-
+    var imgUrls = retrieveImg(htmlSource);
+    photoLinks.innerText = imgUrls.toString();
+    // var ImgString = "";
+    // for (var i in imgUrls) {
+    //  ImgString += imgUrls[i] + " ";
+    // }
+    // photo-links.innerText = ImgString;
   }
 });
 
@@ -25,11 +30,13 @@ function onWindowLoad() {
 window.onload = onWindowLoad;
 
 function retrieveImg(strHtml) {
-    var imageTags = document.getElementsByTagName("img"); // Returns array of <img> DOM nodes
-  var sources = [];
-  for (var i in imageTags) {
+  var el = document.createElement( 'html' );
+  el.innerHTML = strHtml;
+    var imageTags = el.getElementsByTagName("img"); // Returns array of <img> DOM nodes
+    var sources = [];
+    for (var i in imageTags) {
      var src = imageTags[i].src;
      sources.push(src);
-  }
-  return sources;
-}
+   }
+   return sources;
+ }
